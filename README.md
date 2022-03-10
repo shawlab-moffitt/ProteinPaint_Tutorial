@@ -1,1 +1,1 @@
-# ProteinPaint Tutorial
+# Protein Paint Tutorial
