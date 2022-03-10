@@ -1,0 +1,179 @@
+ <!DOCTYPE html>
+<html>
+<body>
+<script src="http://genomeproteinpaint.moffitt.org/bin/proteinpaint.js" charset="utf-8"></script>
+
+<div id=a style="margin:10px"></div>
+
+<script>
+
+function getAllUrlParams(url) {
+  // get query string from url (optional) or window
+  var queryString = url ? url.split('?')[1] : window.location.search.slice(1);
+  // we'll store the parameters here
+  var obj = {};
+  // if query string exists
+  if (queryString) {
+    // stuff after # is not part of query string, so get rid of it
+    queryString = queryString.split('#')[0];
+    // split our query string into its component parts
+    var arr = queryString.split('&');
+    for (var i = 0; i < arr.length; i++) {
+      // separate the keys and the values
+      var a = arr[i].split('=');
+      // set parameter name and value (use 'true' if empty)
+      var paramName = a[0];
+      var paramValue = typeof (a[1]) === 'undefined' ? true : a[1];
+      // (optional) keep case consistent
+      paramName = paramName.toLowerCase();
+      //if (typeof paramValue === 'string') paramValue = paramValue.toLowerCase();
+      // if the paramName ends with square brackets, e.g. colors[] or colors[2]
+      if (paramName.match(/\[(\d+)?\]$/)) {
+        // create key if it doesn't exist
+        var key = paramName.replace(/\[(\d+)?\]/, '');
+        if (!obj[key]) obj[key] = [];
+        // if it's an indexed array e.g. colors[2]
+        if (paramName.match(/\[\d+\]$/)) {
+          // get the index value and add the entry at the appropriate position
+          var index = /\[(\d+)\]/.exec(paramName)[1];
+          obj[key][index] = paramValue;
+        } else {
+          // otherwise add the value to the end of the array
+          obj[key].push(paramValue);
+        }
+      } else {
+        // we're dealing with a string
+        if (!obj[paramName]) {
+          // if it doesn't exist, create property
+          obj[paramName] = paramValue;
+        } else if (obj[paramName] && typeof obj[paramName] === 'string'){
+          // if property does exist and it's a string, convert it to an array
+          obj[paramName] = [obj[paramName]];
+          obj[paramName].push(paramValue);
+        } else {
+          // otherwise add the property
+          obj[paramName].push(paramValue);
+        }
+      }
+    }
+  }
+  return obj;
+}
+const queryString = window.location.search;
+console.log(queryString);
+var obj = getAllUrlParams(queryString);
+var gene_name = obj["gene_name"];
+var sample_name1_1f = obj["sample_name1_1f"];
+var sample_name2_1f = obj["sample_name2_1f"];
+var sample_name3_1f = obj["sample_name3_1f"];
+var sample_name1_2f = obj["sample_name1_2f"];
+var sample_name2_2f = obj["sample_name2_2f"];
+var sample_name3_2f = obj["sample_name3_2f"];
+//var sample_name1_1r = obj["sample_name1_1r"];
+//var sample_name2_1r = obj["sample_name2_1r"];
+//var sample_name3_1r = obj["sample_name3_1r"];
+var sample_name1_2r = obj["sample_name1_2r"];
+var sample_name2_2r = obj["sample_name2_2r"];
+var sample_name3_2r = obj["sample_name3_2r"];
+var samp1 = obj["samp1"];
+var samp2 = obj["samp2"];
+var samp3 = obj["samp3"];
+var bw_file = obj["bigwig_file"];
+var color = obj["color"];
+var file_type1 = obj["file_type1"];
+var file_type2 = obj["file_type2"];
+var highlight = obj["highlight"];
+//var position = obj["position"]
+//var gene_name = obj["gene_name"]
+
+runproteinpaint({
+    host: "http://genomeproteinpaint.moffitt.org",
+    holder: document.getElementById('a'),
+    parseurl: true,
+    block: true,
+    nobox: 1,
+    noheader: 1,
+    genome: "hg19",
+    position: "chr8:127735433-127742951",
+    nativetracks: "RefGene",
+    tracks: [
+    {
+      __isgene: true,
+      translatecoding: true,
+      categories: {
+        coding: { color: '#004D99', label: 'Coding gene' },
+        nonCoding: { color: '#009933', label: 'Noncoding gene' },
+        problem: { color: '#FF3300', label: 'Problem' },
+        pseudo: { color: '#FF00CC', label: 'Pseudogene' }
+      },
+      type: 'bedj',
+      name: 'GENCODE v34',
+      stackheight: 16,
+      stackspace: 1,
+      vpad: 4,
+      //url: 'http://biostools/4472414/Shiny/References/proteinpaint/anno/gencode.v34.hg19.gz'
+      file: 'anno/gencode.v34.hg19.gz'
+    },
+    {
+      type: file_type1,
+      file: sample_name1_1f,
+      name: samp1 + "_" + file_type1
+    },
+    {
+      type: file_type2,
+      strand1: 
+      {
+        file: sample_name1_2f
+      },
+      strand2:
+      {
+        file: sample_name1_2r,
+        "normalize": {"dividefactor": -1}
+      },
+      height: 100,
+      name: samp1 + "_" + file_type2
+    },
+    {
+      type: file_type1,
+      file: sample_name2_1f,
+      name: samp2 + "_" + file_type1
+    },
+    {
+      type: file_type2,
+      strand1: 
+      {
+        file: sample_name2_2f
+      },
+      strand2:
+      {
+        file: sample_name2_2r,
+        "normalize": {"dividefactor": -1}
+      },
+      height: 100,
+      name: samp2 + "_" + file_type2
+    },
+    {
+      type: file_type1,
+      file: sample_name3_1f,
+      name: samp3 + "_" + file_type1
+    },
+    {
+      type: file_type2,
+      strand1: 
+      {
+        file: sample_name3_2f
+      },
+      strand2:
+      {
+        file: sample_name3_2r,
+        "normalize": {"dividefactor": -1}
+      },
+      height: 100,
+      name: samp3 + "_" + file_type2
+    },
+    ]
+})
+
+</script>
+</body>
+</html>

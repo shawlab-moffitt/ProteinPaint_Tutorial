@@ -1,0 +1,5 @@
+ProjectName	Rh18_SF3B1_Sudemycin
+MetaFile	Example1_Input_Files/Rh18_SF3B1_Sudemycin_Meta.txt
+CoordFile	Example1_Input_Files/Coordinate_Files/Exon_Skipping_Coordinates.tsv
+GenBuild	hg38
+TwoStranded	FALSE
