@@ -14,7 +14,7 @@
 
 ## R Dependencies
 
-|  |  |  |  |  |
+|  |  |  |
 | --- | --- | --- |
 | shiny_1.6.0 | shinythemes_1.2.0 | shinyjqui_0.4.0 |
 | dplyr_1.0.7 | tidyr_1.1.3 | readr_2.0.1 |
